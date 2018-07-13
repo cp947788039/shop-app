@@ -52,9 +52,9 @@
     color: #333;
     &.mui-icon {
         display: block;
-        margin: 6px auto 0;
-        width: 24px;
-        height: 24px;
+        margin: 0 auto 4px;
+        width: 0.42rem;
+        height: 0.42rem;
         font-size:0.42rem;
         overflow: hidden;
     }
