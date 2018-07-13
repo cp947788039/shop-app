@@ -81,11 +81,21 @@
   -webkit-font-smoothing: antialiased;
 }
 
+.icon-jujia:before { content: "\e645"; }
+
+.icon-youhaowucanchu:before { content: "\e614"; }
+
 .icon-wode:before { content: "\e708"; }
 
 .icon-fenlei:before { content: "\e7f9"; }
 
 .icon-shouye:before { content: "\e61a"; }
+
+.icon-fuzhuang:before { content: "\e603"; }
+
+.icon-gengduo:before { content: "\e63c"; }
+
+.icon-wodepeijian:before { content: "\e66c"; }
 
 .icon-zhuanti:before { content: "\e68a"; }
 

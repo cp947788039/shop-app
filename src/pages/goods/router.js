@@ -20,4 +20,11 @@ module.exports = [{
 		title: '分类',
 	},
 	component: resolve => require(['./classify.vue'], resolve)
+},{
+	path: '/goods/cart',
+	name: 'cart',
+	meta: {
+		title: '购物车',
+	},
+	component: resolve => require(['./cart.vue'], resolve)
 },] 

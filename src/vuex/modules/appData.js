@@ -31,7 +31,10 @@ export default {
 		},
 		updateConnectionHubStatus(state, isConnectionHub){
 			state.isConnectionHub = isConnectionHub;
-		}
+		},
+		updateRouterName(state, routerName){
+			state.routerName = routerName;
+		},
 	},
 	actions: {
 		updateLocationInfo({commit}, locationInfo){
@@ -45,6 +48,9 @@ export default {
 		},
 		updateConnectionHubStatus({commit}, isConnectionHub){
 			commit("updateConnectionHubStatus", isConnectionHub);
-		}
+		},
+		updateRouterName({commit}, routerName){
+			commit("updateRouterName", routerName);
+		},
 	}
 }

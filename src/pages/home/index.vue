@@ -1,4 +1,8 @@
 <style lang="sass" scoped>
+.container{
+    height:100%;
+    overflow: auto;
+}
 .swiper-container{
     width: 7.5rem;
     height: 4.17rem;
@@ -14,15 +18,15 @@
             overflow:hidden;
         }
     }
-}
+} 
 .m-menu {
-  display: flex;
-  height: 1.81rem;
-  width: 7.5rem;
-  flex-flow: row nowrap;
-  align-items: center;
-  justify-content: space-between;
-  background-color: #fff;
+    display: flex;
+    height: 1.81rem;
+    width: 7.5rem;
+    flex-flow: row nowrap;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
 }
 
 .m-menu .item {
@@ -40,12 +44,20 @@
 }
 
 .m-menu span {
-  display: block;
-  font-size: 0.24rem;
-  text-align: center;
-  margin: 0 auto;
-  line-height: 1;
-  color: #333;
+    display: block;
+    font-size: 0.24rem;
+    text-align: center;
+    margin: 0 auto;
+    line-height: 1;
+    color: #333;
+    &.mui-icon {
+        display: block;
+        margin: 6px auto 0;
+        width: 24px;
+        height: 24px;
+        font-size:0.42rem;
+        overflow: hidden;
+    }
 }
 
 .a-section {
@@ -69,11 +81,8 @@
 }
 
 .a-section .h .txt {
-  padding-right: 0.3rem;
-  background: url("http://ac-3yr0g9cz.clouddn.com/2cdba05369e10f934e54.png") right 4rem no-repeat;
-  background-size: 0.16rem 0.27rem;
-  display: inline-block;
   height: 0.36rem;
+  display: inline-block;
   font-size: 0.33rem;
   line-height: 0.36rem;
 }
@@ -405,7 +414,7 @@
   </div>
   <div class="m-menu">
     <a :href="item.url" class="item"  v-for="(item,index) in channel" :key="index">
-      <img :src="item.icon_url" />
+      <span class="mui-icon iconfont" :class="item.class"></span>
       <span>{{item.name}}</span>
     </a>
   </div>
@@ -530,14 +539,15 @@
                 floorGoods: [],
                 banner: [],
                 channel: [],
+                classArr:['icon-jujia','icon-youhaowucanchu','icon-wodepeijian','icon-fuzhuang','icon-gengduo'],
             }
         },
         created(){
             this.$store.dispatch('updateNavbarTitle','仿网易严选商城');
-            /*this.$store.dispatch('updateNavbarStatus',{isShowHead:true, isShowFoot:true, isShowBack:false});*/
+            this.getList();
         },
         mounted(){
-        	this.getList();
+        	
         },
         methods:{
 			async getList() {
@@ -552,6 +562,14 @@
                         this.floorGoods = data.data.categoryList || [];
                         this.banner = data.data.banner || [];
                         this.channel = data.data.channel || [];
+                        this.channel = this.channel.map((item,index) => {
+                            this.classArr.forEach((items,indexs) => {
+                                if(index==indexs){
+                                    Object.assign(item,{class:items})
+                                }
+                            })
+                            return item;
+                        })
 			      	}
 			    })
                 await new Swiper ('.swiper-container-banner', {

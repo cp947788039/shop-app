@@ -1,12 +1,12 @@
 <template>
-	<div class="container">
+	<div class="app">
 		<headers></headers>
 		<div class="wrapper" :class="{'mui-content': $store.state.appData.isShowHead, 'toolbar-fixed': $store.state.appData.isShowFoot}">
 			<transition :name="$store.state.routerStatus.transition">
 					<router-view class="page-wrap"></router-view>
 			</transition>
 		</div>
-		<footers :attr="$store.state.appData.routerName"></footers>
+		<footers></footers>
 	</div>
 </template>
 <script>

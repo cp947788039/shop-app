@@ -1,18 +1,10 @@
 // 默认首页路由
-const route = [{
-	path: '/',
-	name: 'index',
-	meta: {
-		title: '首页',
-	},
-	component: resolve => require(['./pages/home/index.vue'], resolve)
-}]
+const route = []
 
 //合并路由 router.js 路由集合
 let routes = route.concat(
 	require('pages/home/router'),
 	require('pages/address/router'),
-	require('pages/cart/router'),
 	require('pages/coupons/router'),
 	require('pages/goods/router'),
 	require('pages/order/router'),
@@ -50,7 +42,7 @@ export default {
 			//应用的基路径。例如，如果整个单页应用服务在 /app/ 下，然后 base 就应该设为 "/app/"。
 			base: "/",
 			//全局配置 <router-link> 的默认『激活 class 类名』。参考 router-link.
-			linkActiveClass: "router-link-active"
+			linkActiveClass: ""
 		});
 		//const [_push, _go, _replace] = [router.push, router.go, router.replace];
 		const {push, go, replace} = router;
@@ -109,6 +101,7 @@ export default {
 				store.dispatch("updateNavbarStatus",{isShowHead: true, isShowBack: true, isShowFoot: true});
 				break;
 		}
+		store.dispatch("updateRouterName", to.name);
 		app.appRouters.push(_direction && (store.state.routerStatus.direction == "going" || store.state.routerStatus.direction == "backing" || store.state.routerStatus.direction == "replace"), {
 			name: to.name,
 			query: to.query,

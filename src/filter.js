@@ -6,7 +6,6 @@ import moment from "moment";
 let arrFilder = [
 	require('pages/home/filter'),
 	require('pages/address/filter'),
-	require('pages/cart/filter'),
 	require('pages/coupons/filter'),
 	require('pages/goods/filter'),
 	require('pages/order/filter'),

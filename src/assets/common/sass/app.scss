@@ -34,14 +34,15 @@ body,button,input,select,textarea {
 
 a{
     color:#666;
-    &:hover{
+    /* &:hover{
         color:#d70000;
-    }
+    } */
 }
 
-.container {
+.app {
     position: relative;
     max-width: 750px;
+    height:100%;
     margin: 0 auto;
     display: flex;
     flex-direction: column;
@@ -49,7 +50,10 @@ a{
     justify-content: space-between;
     -webkit-box-sizing: border-box;
 }
-
+.wrapper{
+    width:100%;
+    height:100%;
+}
 .toolbar-fixed {
     padding: 0 0 60px;
 }
