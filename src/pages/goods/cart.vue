@@ -39,7 +39,7 @@
     margin-top: 2rem;
 }
 
-.no-cart .c image{
+.no-cart .c img{
     margin: 0 auto;
     display: block;
     text-align: center;
@@ -47,7 +47,7 @@
     height: 2.58rem;
 }
 
-.no-cart .c text{
+.no-cart .c span{
     margin: 0 auto;
     display: block;
     width: 2.58rem;
@@ -376,9 +376,9 @@
 					                <div class="b">
 					                  	<text class="price">{{item.retail_price | currency}}</text>
 					                  	<div class="selnum">
-					                    	<div class="cut" @click="cutNumber(index)">-</div>
+					                    	<div class="cut" @click="cutNumber(item)">-</div>
 					                    	<input v-model="item.number" class="number" disabled="true" type="number" />
-					                    	<div class="add" @click="addNumber(index)">+</div>
+					                    	<div class="add" @click="addNumber(item)">+</div>
 					                  	</div>
 					                </div>
 					            </div>
@@ -466,6 +466,132 @@
 				    this.checkedAllStatus = this.isCheckedAll();
 				    this.cartTotal.checkedGoodsCount = this.getCheckedGoodsCount();
 				}
+        	},
+        	getCheckedGoodsCount(){
+        		let checkedGoodsCount = 0;
+			    this.cartGoods.forEach(function (v) {
+			      if (v.checked === true) {
+			        checkedGoodsCount += v.number;
+			      }
+			    });
+			    return checkedGoodsCount;
+        	},
+        	checkedAll(){
+        		if (!this.isEditCart) {
+				    let productIds = this.cartGoods.map(function (v) {
+				        return v.product_id;
+				    });
+				    app.util.ajax({
+	                    appjson:true,
+				        url: api.CartChecked,
+				        data: {
+				        	productIds: productIds.join(','),
+				        	isChecked: this.isCheckedAll() ? 0 : 1,
+				        },
+				        success: (data)=> {
+					        this.cartGoods = data.data.cartList;
+	          				this.cartTotal = data.data.cartTotal;
+	          				this.checkedAllStatus = this.isCheckedAll();
+				      	}
+				    })
+
+				} else {
+				    //编辑状态
+				    let checkedAllStatus = this.isCheckedAll();
+				    let tmpCartData = this.cartGoods.map(function (v) {
+				        v.checked = !checkedAllStatus;
+				        return v;
+				    });
+					this.cartGoods = tmpCartData;
+				    this.checkedAllStatus = this.isCheckedAll();
+				    this.cartTotal.checkedGoodsCount = this.getCheckedGoodsCount();
+				}
+        	},
+        	editCart(){
+        		if (this.isEditCart) {
+				    this.getCartList();
+				    this.isEditCart = !this.isEditCart
+				} else {
+				    //编辑状态
+				    let tmpCartList = this.cartGoods.map(function (v) {
+				        v.checked = false;
+				        return v;
+				    });
+				    this.editCartList = this.cartGoods;
+			        this.cartGoods = tmpCartList;
+			        this.isEditCart = !this.isEditCart;
+			        this.checkedAllStatus = this.isCheckedAll();
+			        this.cartTotal.checkedGoodsCount = this.getCheckedGoodsCount();
+				}
+        	},
+        	updateCart(productId, goodsId, number, id){
+        		app.util.ajax({
+                    appjson:true,
+			        url: api.CartUpdate,
+			        data: {
+			        	productId,
+			        	goodsId,
+			        	number,
+			        	id,
+			        },
+			        success: (data)=> {
+          				this.checkedAllStatus = this.isCheckedAll();
+			      	}
+			    })
+        	},
+        	cutNumber(cartItem){
+			    let number = (cartItem.number - 1 > 1) ? cartItem.number - 1 : 1;
+			    cartItem.number = number;
+			    this.updateCart(cartItem.product_id, cartItem.goods_id, number, cartItem.id);
+        	},
+        	addNumber(cartItem){
+        		let number = cartItem.number + 1;
+			    cartItem.number = number;
+			    this.updateCart(cartItem.product_id, cartItem.goods_id, number, cartItem.id);
+        	},
+        	checkoutOrder(){
+        		let checkedGoods = this.cartGoods.filter(function (element, index, array) {
+			    	if (element.checked == true) {
+			        	return true;
+			    	} else {
+			        	return false;
+			      	}
+			    });
+			    if (checkedGoods.length <= 0) {
+			      return false;
+			    }
+			    
+        	},
+        	deleteCart(){
+        		let productIds = this.cartGoods.filter(function (element, index, array) {
+			      	if (element.checked == true) {
+			        	return true;
+			      	} else {
+			        	return false;
+			      	}
+			    });
+			    if (productIds.length <= 0) {
+			      return false;
+			    }
+			    productIds = productIds.map(function (element, index, array) {
+			      	if (element.checked == true) {
+			        	return element.product_id;
+			      	}
+			    });
+			    app.util.ajax({
+                    appjson:true,
+			        url: api.CartDelete,
+			        data: {
+			        	productIds:productIds.join(','),
+			        },
+			        success: (data)=> {
+          				this.cartGoods = data.data.cartList.map(v => {
+					        v.checked = false;
+					        return v;
+					    });
+			          	this.cartTotal = data.data.cartTotal;
+			      	}
+			    })
         	},
         	
         }

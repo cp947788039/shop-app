@@ -28,7 +28,7 @@
             </router-link>
         </div>
         <div class="mui-item toolbar-icon">
-            <router-link :to="{name: 'user'}" class="toolbar-link" :class="{'router-link-active':attr=='user'}">
+            <router-link :to="{name: 'userList'}" class="toolbar-link" :class="{'router-link-active':attr=='userList'}">
                 <span class="mui-icon iconfont icon-wode"></span>
                 <span class="footer-txt">我的</span>
             </router-link>
